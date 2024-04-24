@@ -10,8 +10,6 @@ final class MusicViewCell: UITableViewCell {
     
     @IBOutlet private weak var trackDurationLabel: UILabel!
     
-    var player: AVPlayer!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -28,7 +26,7 @@ final class MusicViewCell: UITableViewCell {
     
     func configureCell(track: Track) {
         trackNameLabel.text = "\(track.trackName) - \(track.artistName)"
-        player = AVPlayer(url: URL(fileURLWithPath: track.trackURL))
+        let player: AVPlayer = AVPlayer(url: URL(fileURLWithPath: track.trackURL))
         let dateFormatter = DateFormatter()
         if let duration = player.currentItem?.asset.duration.seconds {
             trackDurationLabel.text = dateFormatter.string(from: duration)

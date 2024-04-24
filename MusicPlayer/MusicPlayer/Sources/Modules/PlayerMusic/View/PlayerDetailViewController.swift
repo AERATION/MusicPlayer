@@ -88,8 +88,8 @@ final class PlayerDetailViewController: UIViewController {
         addTargets()
         makeConstraints()
         bindToViewModel()
-        
     }
+    
     private func bindToViewModel() {
         detailViewModel.$isPlaying
             .sink { [weak self] state in

@@ -34,4 +34,3 @@ extension ListMusicViewController: UITableViewDelegate, UITableViewDataSource {
         self.present(playerDetailVC, animated: true)
     }
 }
-

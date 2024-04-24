@@ -15,11 +15,8 @@ final class PlayerDetailViewModel: PlayerDetailVMProtocol {
     
     //MARK: Properties
     @Published var currentDuration: Double = 0
-    
     @Published var maxCurrentDuration: Double = 0
-    
     @Published var currentTrackIndex: Int = 0
-    
     @Published var isPlaying: Bool = false
     
     private var subscriptions = Set<AnyCancellable>()
@@ -36,7 +33,9 @@ final class PlayerDetailViewModel: PlayerDetailVMProtocol {
     
     func startPlay(trackIndex: Int) {
         MusicService.shared.play(trackIndex: trackIndex)
-        maxCurrentDuration = (MusicService.shared.player.currentItem?.asset.duration.seconds)!
+        if let duration = MusicService.shared.player.currentItem?.asset.duration.seconds {
+            maxCurrentDuration = duration
+        }
         MusicService.shared.player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1000), queue: DispatchQueue.main) { (time) in
             self.currentDuration = time.seconds
         }
@@ -54,23 +53,23 @@ final class PlayerDetailViewModel: PlayerDetailVMProtocol {
     
     func onForwardButtonTapped() {
         MusicService.shared.nextTrack()
-        maxCurrentDuration = (MusicService.shared.player.currentItem?.asset.duration.seconds)!
+        if let duration = MusicService.shared.player.currentItem?.asset.duration.seconds {
+            maxCurrentDuration = duration
+        }
     }
     
     func onBackwordButtonTapped() {
         MusicService.shared.previousTrack()
-        maxCurrentDuration = (MusicService.shared.player.currentItem?.asset.duration.seconds)!
+        if let duration = MusicService.shared.player.currentItem?.asset.duration.seconds {
+            maxCurrentDuration = duration
+        }
     }
     
     //MARK: Private functions
     private func addObservers() {
         MusicService.shared.$isPlaying
             .sink { [weak self] state in
-                if state {
-                    self?.isPlaying = true
-                } else {
-                    self?.isPlaying = false
-                }
+                self?.isPlaying = state
             }
             .store(in: &subscriptions)
         

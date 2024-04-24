@@ -16,9 +16,7 @@ final class MusicService: MusicServiceProtocol {
     static let shared = MusicService()
     
     @Published var player = AVPlayer()
-    
     @Published var currentTrackIndex = 0
-    
     @Published var isPlaying = false
     
     var newTracks: [Track] = []
@@ -83,7 +81,7 @@ final class MusicService: MusicServiceProtocol {
     }
     
     @objc func trackDidEnded() {
+        NotificationCenter.default.removeObserver(self)
         nextTrack()
     }
-    
 }
