@@ -4,8 +4,9 @@ import Foundation
 import Combine
 import MediaPlayer
 
-class PlayerDetailViewController: UIViewController {
+final class PlayerDetailViewController: UIViewController {
     
+    //MARK: Properties
     private var subscriptions = Set<AnyCancellable>()
     
     private let trackNameLabel: UILabel = {
@@ -67,12 +68,14 @@ class PlayerDetailViewController: UIViewController {
     
     let detailViewModel = PlayerDetailViewModel()
     
+    //MARK: Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureUI()
     }
     
+    //MARK: Private methods
     private func configureUI() {
         view.addSubview(trackNameLabel)
         view.addSubview(trackArtistLabel)
@@ -87,7 +90,6 @@ class PlayerDetailViewController: UIViewController {
         bindToViewModel()
         
     }
-    
     private func bindToViewModel() {
         detailViewModel.$isPlaying
             .sink { [weak self] state in
@@ -104,29 +106,23 @@ class PlayerDetailViewController: UIViewController {
         detailViewModel.$maxCurrentDuration
             .sink { [weak self] duration in
                 self?.trackDurationSlider.maximumValue = Float(duration)
-                let maxCurrentTime = Date(timeIntervalSince1970: duration)
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "mm:ss"
-                let formattedTime = dateFormatter.string(from: maxCurrentTime)
-                self?.trackDurationLabel.text = formattedTime
+                self?.trackDurationLabel.text = dateFormatter.string(from: duration)
             }
             .store(in: &subscriptions)
         
         detailViewModel.$currentDuration
             .sink { [weak self] duration in
                 self?.trackDurationSlider.value = Float(duration)
-                let currentTime = Date(timeIntervalSince1970: duration)
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "mm:ss"
-                let formattedTime = dateFormatter.string(from: currentTime)
-                self?.currentTrackDurationLabel.text = formattedTime
+                self?.currentTrackDurationLabel.text = dateFormatter.string(from: duration)
             }
             .store(in: &subscriptions)
         
-        MusicService.shared.$currentTrackIndex
-            .sink { [weak self] currentTrack in
-                self?.trackNameLabel.text = MusicService.shared.newTracks[currentTrack].trackName
-                self?.trackArtistLabel.text = MusicService.shared.newTracks[currentTrack].artistName
+        detailViewModel.$currentTrackIndex
+            .sink { [weak self] currentIndex in
+                self?.trackNameLabel.text = MusicService.shared.newTracks[currentIndex].trackName
+                self?.trackArtistLabel.text = MusicService.shared.newTracks[currentIndex].artistName
             }
             .store(in: &subscriptions)
     }

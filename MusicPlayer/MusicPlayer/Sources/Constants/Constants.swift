@@ -1,11 +1,15 @@
 
 import Foundation
 
+//MARK: - Constants
 enum C {
+    
+    //MARK: Colors
     enum Colors {
         
     }
     
+    //MARK: Constraints
     enum Constraints {
         static let trackNameLabelHeight = 42
         

@@ -2,13 +2,13 @@
 import UIKit
 import MediaPlayer
 
-class MusicViewCell: UITableViewCell {
+final class MusicViewCell: UITableViewCell {
     
     static var identifier: String { "\(Self.self)" }
     
-    @IBOutlet weak var trackNameLabel: UILabel!
+    @IBOutlet private weak var trackNameLabel: UILabel!
     
-    @IBOutlet weak var trackDurationLabel: UILabel!
+    @IBOutlet private weak var trackDurationLabel: UILabel!
     
     var player: AVPlayer!
     
@@ -29,12 +29,11 @@ class MusicViewCell: UITableViewCell {
     func configureCell(track: Track) {
         trackNameLabel.text = "\(track.trackName) - \(track.artistName)"
         player = AVPlayer(url: URL(fileURLWithPath: track.trackURL))
-        let duration = player.currentItem?.asset.duration.seconds
-        let currentTime = Date(timeIntervalSince1970: duration!)
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm:ss"
-        let formattedTime = dateFormatter.string(from: currentTime)
-        trackDurationLabel.text = formattedTime
+        if let duration = player.currentItem?.asset.duration.seconds {
+            trackDurationLabel.text = dateFormatter.string(from: duration)
+        }
+        
     }
     
 }

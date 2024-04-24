@@ -2,8 +2,9 @@
 import Foundation
 import UIKit
 
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension ListMusicViewController: UITableViewDelegate, UITableViewDataSource {
-
+    
     func setupTableView() {
         listMusicTableView.dataSource = self
         listMusicTableView.delegate = self
@@ -15,14 +16,14 @@ extension ListMusicViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return listMusicViewModel.getListMusicCount()
+        return listMusicViewModel.getListMusicsCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let trackCell = listMusicTableView.dequeueReusableCell(withIdentifier: MusicViewCell.identifier, for: indexPath) as? MusicViewCell else {
             return UITableViewCell()
         }
-        let trackList = listMusicViewModel.getTrack()
+        let trackList = listMusicViewModel.getTracks()
         trackCell.configureCell(track: trackList[indexPath.row])
         return trackCell
     }

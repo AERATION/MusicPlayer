@@ -1,16 +1,23 @@
 
 import Foundation
 
-final class ListMusicViewModel {
+protocol ListMusicVMProtocol {
+    func loadListMusics()
+    func getListMusicsCount() -> Int
+    func getTracks() -> [Track]
+}
+
+final class ListMusicViewModel: ListMusicVMProtocol {
+    
     func loadListMusics() {
         MusicService.shared.loadMusic()
     }
     
-    func getListMusicCount() -> Int {
-        return MusicService.shared.newTracks.count
+    func getListMusicsCount() -> Int {
+        MusicService.shared.newTracks.count
     }
     
-    func getTrack() -> [Track] {
-        return MusicService.shared.newTracks
+    func getTracks() -> [Track] {
+        MusicService.shared.newTracks
     }
 }

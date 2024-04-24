@@ -3,8 +3,9 @@ import UIKit
 import SnapKit
 import MediaPlayer
 
-class ListMusicViewController: UIViewController {
+final class ListMusicViewController: UIViewController {
     
+    //MARK: Properties
     let listMusicViewModel = ListMusicViewModel()
     
     let listMusicTableView: UITableView = {
@@ -12,6 +13,7 @@ class ListMusicViewController: UIViewController {
         return tableView
     } ()
     
+    //MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -20,7 +22,7 @@ class ListMusicViewController: UIViewController {
         listMusicViewModel.loadListMusics()
     }
     
-
+    //MARK: private methods
     private func setupConstraintsTableView() {
         view.addSubview(listMusicTableView)
         

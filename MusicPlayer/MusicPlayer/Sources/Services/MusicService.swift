@@ -7,21 +7,23 @@ protocol MusicServiceProtocol {
     func pause()
     func nextTrack()
     func previousTrack()
-    func loadMusic()
+    func loadMusic() 
 }
 
 final class MusicService: MusicServiceProtocol {
     
+    //MARK: Properties
     static let shared = MusicService()
     
-    var newTracks: [Track] = []
-    
-    @Published var player: AVPlayer = AVPlayer()
+    @Published var player = AVPlayer()
     
     @Published var currentTrackIndex = 0
     
     @Published var isPlaying = false
     
+    var newTracks: [Track] = []
+    
+    //MARK: Functions
     func play(trackIndex: Int) {
         if currentTrackIndex == trackIndex && isPlaying == true {
             pause()
@@ -63,20 +65,20 @@ final class MusicService: MusicServiceProtocol {
     func loadMusic() {
         let audioFileNames = Bundle.main.paths(forResourcesOfType: "mp3", inDirectory: nil)
         
-        for audioUrl in audioFileNames {
-            let avp = AVPlayerItem(url: URL(fileURLWithPath: audioUrl))
-            let commonMetaData = avp.asset.commonMetadata
-            var title: String = ""
-            var artist: String = ""
-            for item in commonMetaData {
-                if item.commonKey!.rawValue == "title" {
-                    title = item.stringValue!
+        if !audioFileNames.isEmpty {
+            for audioUrl in audioFileNames {
+                let avp = AVPlayerItem(url: URL(fileURLWithPath: audioUrl))
+                let commonMetaData = avp.asset.commonMetadata
+                var title: String = ""
+                var artist: String = ""
+                for item in commonMetaData {
+                    if let key = item.commonKey?.rawValue, let value = item.stringValue {
+                        if key == "title" { title = value }
+                        if key == "artist" { artist = value }
+                    }
                 }
-                if item.commonKey!.rawValue == "artist" {
-                    artist = item.stringValue!
-                }
+                newTracks.append(Track(trackName: title, artistName: artist, trackURL: audioUrl))
             }
-            newTracks.append(Track(trackName: title, artistName: artist, trackURL: audioUrl))
         }
     }
     

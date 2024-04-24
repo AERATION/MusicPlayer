@@ -3,20 +3,33 @@ import Foundation
 import MediaPlayer
 import Combine
 
-class PlayerDetailViewModel {
+protocol PlayerDetailVMProtocol {
+    func onMusicCellTapped(trackIndex: Int)
+    func startPlay(trackIndex: Int)
+    func pauseTrack()
+    func onForwardButtonTapped()
+    func onBackwordButtonTapped()
+}
+
+final class PlayerDetailViewModel: PlayerDetailVMProtocol {
     
+    //MARK: Properties
     @Published var currentDuration: Double = 0
     
     @Published var maxCurrentDuration: Double = 0
+    
+    @Published var currentTrackIndex: Int = 0
     
     @Published var isPlaying: Bool = false
     
     private var subscriptions = Set<AnyCancellable>()
     
+    //MARK: Initializations
     init() {
-        addObserverState()
+        addObservers()
     }
     
+    //MARK: Functions
     func onMusicCellTapped(trackIndex: Int) {
         startPlay(trackIndex: trackIndex)
     }
@@ -49,7 +62,8 @@ class PlayerDetailViewModel {
         maxCurrentDuration = (MusicService.shared.player.currentItem?.asset.duration.seconds)!
     }
     
-    private func addObserverState() {
+    //MARK: Private functions
+    private func addObservers() {
         MusicService.shared.$isPlaying
             .sink { [weak self] state in
                 if state {
@@ -57,6 +71,12 @@ class PlayerDetailViewModel {
                 } else {
                     self?.isPlaying = false
                 }
+            }
+            .store(in: &subscriptions)
+        
+        MusicService.shared.$currentTrackIndex
+            .sink { [weak self] index in
+                self?.currentTrackIndex = index
             }
             .store(in: &subscriptions)
     }

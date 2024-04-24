@@ -15,6 +15,7 @@
 		0E51F6452BD798BB002889A7 /* ListMusicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E51F6442BD798BB002889A7 /* ListMusicViewController.swift */; };
 		0E51F64A2BD798BC002889A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E51F6492BD798BC002889A7 /* Assets.xcassets */; };
 		0E51F64D2BD798BC002889A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E51F64B2BD798BC002889A7 /* LaunchScreen.storyboard */; };
+		0E780DD92BD970E000B1D9C7 /* +DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E780DD82BD970E000B1D9C7 /* +DateFormatter.swift */; };
 		0EDE6C1C2BD7A0B0008FB57F /* ListMusicViewController + TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE6C1B2BD7A0B0008FB57F /* ListMusicViewController + TableView.swift */; };
 		0EDE6C242BD7A745008FB57F /* LostInTheEcho.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE6C1F2BD7A744008FB57F /* LostInTheEcho.mp3 */; };
 		0EDE6C252BD7A745008FB57F /* Beliver.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE6C202BD7A744008FB57F /* Beliver.mp3 */; };
@@ -40,6 +41,7 @@
 		0E51F6492BD798BC002889A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E51F64C2BD798BC002889A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E51F64E2BD798BC002889A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E780DD82BD970E000B1D9C7 /* +DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "+DateFormatter.swift"; sourceTree = "<group>"; };
 		0EDE6C1B2BD7A0B0008FB57F /* ListMusicViewController + TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListMusicViewController + TableView.swift"; sourceTree = "<group>"; };
 		0EDE6C1F2BD7A744008FB57F /* LostInTheEcho.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LostInTheEcho.mp3; sourceTree = "<group>"; };
 		0EDE6C202BD7A744008FB57F /* Beliver.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Beliver.mp3; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 		0E51F6552BD799E0002889A7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0E780DD72BD970C900B1D9C7 /* Extensions */,
 				0EDE6C322BD7EFA5008FB57F /* Services */,
 				0E51F6582BD79A28002889A7 /* Model */,
 				0E51F6572BD79A1F002889A7 /* Constants */,
@@ -211,6 +214,14 @@
 				0E1D09742BD959D1000CD2CB /* View */,
 			);
 			path = PlayerMusic;
+			sourceTree = "<group>";
+		};
+		0E780DD72BD970C900B1D9C7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0E780DD82BD970E000B1D9C7 /* +DateFormatter.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		0EDE6C292BD7A74A008FB57F /* Musics */ = {
@@ -379,6 +390,7 @@
 				0EDE6C2F2BD7BBDE008FB57F /* PlayerDetailViewController.swift in Sources */,
 				0EDE6C2D2BD7AD75008FB57F /* ListMusicViewModel.swift in Sources */,
 				0E51F6432BD798BB002889A7 /* SceneDelegate.swift in Sources */,
+				0E780DD92BD970E000B1D9C7 /* +DateFormatter.swift in Sources */,
 				0EDE6C2B2BD7AC87008FB57F /* Track.swift in Sources */,
 				0E1D09702BD956EE000CD2CB /* MusicViewCell.swift in Sources */,
 			);
