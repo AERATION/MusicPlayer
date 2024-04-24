@@ -11,28 +11,26 @@ extension ListMusicViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func registerCell() {
-        listMusicTableView.register(MusicCell.self, forCellReuseIdentifier: MusicCell.identifier)
+        listMusicTableView.register(UINib(nibName: String(describing: MusicViewCell.self), bundle: nil), forCellReuseIdentifier: String(describing: MusicViewCell.self))
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return listMusicViewModel.tracks.count
-        return MusicService.shared.newTracks.count
+        return listMusicViewModel.getListMusicCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let trackCell = listMusicTableView.dequeueReusableCell(withIdentifier: MusicCell.identifier, for: indexPath) as? MusicCell else {
+        guard let trackCell = listMusicTableView.dequeueReusableCell(withIdentifier: MusicViewCell.identifier, for: indexPath) as? MusicViewCell else {
             return UITableViewCell()
         }
-//        trackCell.configureCell(track: listMusicViewModel.tracks[indexPath.row])
-        trackCell.configureCell(track: MusicService.shared.newTracks[indexPath.row])
+        let trackList = listMusicViewModel.getTrack()
+        trackCell.configureCell(track: trackList[indexPath.row])
         return trackCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cellViewModel = listMusicViewModel.tracks[indexPath.row]
-        let cellViewModel = MusicService.shared.newTracks[indexPath.row]
         let playerDetailVC = PlayerDetailViewController()
-        playerDetailVC.detailVM.startPlayback(trackIndex: indexPath.row)
+        playerDetailVC.detailViewModel.onMusicCellTapped(trackIndex: indexPath.row)
         self.present(playerDetailVC, animated: true)
     }
 }
+

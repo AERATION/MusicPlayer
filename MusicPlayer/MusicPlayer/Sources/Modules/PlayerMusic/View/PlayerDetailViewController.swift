@@ -6,8 +6,6 @@ import MediaPlayer
 
 class PlayerDetailViewController: UIViewController {
     
-    var currentTrack: Track = Track(trackName: "", artistName: "")
-    
     private var subscriptions = Set<AnyCancellable>()
     
     private let trackNameLabel: UILabel = {
@@ -67,7 +65,7 @@ class PlayerDetailViewController: UIViewController {
         return button
     }()
     
-    let detailVM = PlayerDetailViewModel()
+    let detailViewModel = PlayerDetailViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,9 +89,9 @@ class PlayerDetailViewController: UIViewController {
     }
     
     private func bindToViewModel() {
-        detailVM.$isPlaying
+        detailViewModel.$isPlaying
             .sink { [weak self] state in
-                if state {
+                if state == true {
                     let image = UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40)))
                     self?.playPauseButton.setImage(image, for: .normal)
                 } else {
@@ -103,7 +101,7 @@ class PlayerDetailViewController: UIViewController {
             }
             .store(in: &subscriptions)
         
-        detailVM.$maxCurrentDuration
+        detailViewModel.$maxCurrentDuration
             .sink { [weak self] duration in
                 self?.trackDurationSlider.maximumValue = Float(duration)
                 let maxCurrentTime = Date(timeIntervalSince1970: duration)
@@ -114,7 +112,7 @@ class PlayerDetailViewController: UIViewController {
             }
             .store(in: &subscriptions)
         
-        detailVM.$currentDuration
+        detailViewModel.$currentDuration
             .sink { [weak self] duration in
                 self?.trackDurationSlider.value = Float(duration)
                 let currentTime = Date(timeIntervalSince1970: duration)
@@ -140,68 +138,68 @@ class PlayerDetailViewController: UIViewController {
     }
     
     @objc private func playPauseButtonTapped() {
-        detailVM.pauseTrack()
+        detailViewModel.pauseTrack()
     }
     
     @objc private func nextTrackButtonTapped() {
-        detailVM.onForwardButtonTapped()
+        detailViewModel.onForwardButtonTapped()
     }
     
     @objc private func backTrackButtonTapped() {
-        detailVM.onBackwordButtonTapped()
+        detailViewModel.onBackwordButtonTapped()
     }
     
     private func makeConstraints() {
         trackNameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.height.equalTo(42)
+            make.height.equalTo(C.Constraints.trackNameLabelHeight)
         }
         
         trackArtistLabel.snp.makeConstraints { make in
-            make.top.equalTo(trackNameLabel.snp.bottom).offset(8)
+            make.top.equalTo(trackNameLabel.snp.bottom).offset(C.Constraints.trackArtistlabelTop)
             make.centerX.equalToSuperview()
-            make.height.equalTo(32)
+            make.height.equalTo(C.Constraints.trackArtistLabelHeight)
         }
         
         currentTrackDurationLabel.snp.makeConstraints { make in
-            make.leading.equalTo(16)
-            make.top.equalTo(trackArtistLabel.snp.bottom).offset(32)
-            make.height.equalTo(22)
+            make.leading.equalTo(C.Constraints.currentTrackDurationLabelLeading)
+            make.top.equalTo(trackArtistLabel.snp.bottom).offset(C.Constraints.currentTrackDurationLabelTop)
+            make.height.equalTo(C.Constraints.currentTrackDurationLabelHeight)
         }
         
         trackDurationLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(-16)
-            make.top.equalTo(trackArtistLabel.snp.bottom).offset(32)
-            make.height.equalTo(22)
+            make.trailing.equalTo(C.Constraints.trackDurationLabelTrailing)
+            make.top.equalTo(trackArtistLabel.snp.bottom).offset(C.Constraints.trackDurationLabelTop)
+            make.height.equalTo(C.Constraints.trackDurationLabelHeight)
         }
         
         trackDurationSlider.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.top.equalTo(currentTrackDurationLabel.snp.bottom).offset(8)
-            make.height.equalTo(4)
+            make.leading.equalToSuperview().offset(C.Constraints.trackDurationSliderLeading)
+            make.trailing.equalToSuperview().offset(C.Constraints.trackDurationSliderTrailing)
+            make.top.equalTo(currentTrackDurationLabel.snp.bottom).offset(C.Constraints.trackDurationSliderTop)
+            make.height.equalTo(C.Constraints.trackDurationSliderHeight)
         }
         
         playPauseButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(trackDurationSlider.snp.bottom).offset(32)
-            make.height.equalTo(48)
-            make.width.equalTo(48)
+            make.top.equalTo(trackDurationSlider.snp.bottom).offset(C.Constraints.playPauseButtonTop)
+            make.height.equalTo(C.Constraints.playPauseButtonHeight)
+            make.width.equalTo(C.Constraints.playPauseButtonWidth)
         }
         
         backwardButton.snp.makeConstraints { make in
             make.top.equalTo(playPauseButton.snp.top)
-            make.trailing.equalTo(playPauseButton.snp.leading).offset(-32)
-            make.height.equalTo(48)
-            make.width.equalTo(48)
+            make.trailing.equalTo(playPauseButton.snp.leading).offset(C.Constraints.backwordButtonTrailing)
+            make.height.equalTo(C.Constraints.backwordButtonHeight)
+            make.width.equalTo(C.Constraints.backwordButtonWidth)
         }
         
         forwardButton.snp.makeConstraints { make in
             make.top.equalTo(playPauseButton.snp.top)
-            make.leading.equalTo(playPauseButton.snp.trailing).offset(32)
-            make.height.equalTo(48)
-            make.width.equalTo(48)
+            make.leading.equalTo(playPauseButton.snp.trailing).offset(C.Constraints.forwardButtonLeading)
+            make.height.equalTo(C.Constraints.forwardButtonHeight)
+            make.width.equalTo(C.Constraints.forwardButtonWidth)
         }
     }
 }

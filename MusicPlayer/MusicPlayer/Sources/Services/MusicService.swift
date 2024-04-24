@@ -2,53 +2,62 @@
 import Foundation
 import MediaPlayer
 
-final class MusicService {
-    
-    var tracks: [Track] = [
-        Track(trackName: "Animals", artistName: "Maroon"),
-        Track(trackName: "Beliver", artistName: "Imagine Dragons"),
-        Track(trackName: "Demons", artistName: "Imagine Dragons"),
-        Track(trackName: "LostInTheEcho", artistName: "Linkin Park"),
-        Track(trackName: "Numb", artistName: "Linkin Park"),
-    ]
-    
-    var newTracks: [TestTrack] = []
+protocol MusicServiceProtocol {
+    func play(trackIndex: Int)
+    func pause()
+    func nextTrack()
+    func previousTrack()
+    func loadMusic()
+}
+
+final class MusicService: MusicServiceProtocol {
     
     static let shared = MusicService()
+    
+    var newTracks: [Track] = []
     
     @Published var player: AVPlayer = AVPlayer()
     
     @Published var currentTrackIndex = 0
     
+    @Published var isPlaying = false
+    
     func play(trackIndex: Int) {
-        player.pause()
-        currentTrackIndex = trackIndex
-        let playerItem = AVPlayerItem(url: URL(fileURLWithPath: newTracks[trackIndex].trackURL))
-        NotificationCenter.default.addObserver(self, selector: #selector(trackDidEnded), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
-        player.replaceCurrentItem(with: playerItem)
-        player.play()
+        if currentTrackIndex == trackIndex && isPlaying == true {
+            pause()
+        } else {
+            currentTrackIndex = trackIndex
+            let playerItem = AVPlayerItem(url: URL(fileURLWithPath: newTracks[trackIndex].trackURL))
+            NotificationCenter.default.addObserver(self, selector: #selector(trackDidEnded), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
+            player.replaceCurrentItem(with: playerItem)
+            player.play()
+            isPlaying = true
+        }
     }
     
     func pause() {
         player.pause()
+        isPlaying = false
     }
     
     func nextTrack() {
-        if currentTrackIndex == tracks.count-1 {
-            currentTrackIndex = 0
+        var newTrackIndex = currentTrackIndex
+        if newTrackIndex == newTracks.count-1 {
+            newTrackIndex = 0
         } else {
-            currentTrackIndex += 1
+            newTrackIndex+=1
         }
-        play(trackIndex: currentTrackIndex)
+        play(trackIndex: newTrackIndex)
     }
     
     func previousTrack() {
-        if currentTrackIndex == 0 {
-            currentTrackIndex = tracks.count-1
+        var newTrackIndex = currentTrackIndex
+        if newTrackIndex == 0 {
+            newTrackIndex = newTracks.count-1
         } else {
-            currentTrackIndex -= 1
+            newTrackIndex-=1
         }
-        play(trackIndex: currentTrackIndex)
+        play(trackIndex: newTrackIndex)
     }
     
     func loadMusic() {
@@ -67,10 +76,9 @@ final class MusicService {
                     artist = item.stringValue!
                 }
             }
-            newTracks.append(TestTrack(trackName: title, artistName: artist, trackURL: audioUrl))
+            newTracks.append(Track(trackName: title, artistName: artist, trackURL: audioUrl))
         }
     }
-    
     
     @objc func trackDidEnded() {
         nextTrack()
