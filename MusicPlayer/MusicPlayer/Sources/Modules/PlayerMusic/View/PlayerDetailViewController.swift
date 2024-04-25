@@ -45,7 +45,7 @@ final class PlayerDetailViewController: UIViewController {
     private let backwardButton: UIButton = {
         let button = UIButton()
         button.tintColor = .blue
-        let image = UIImage(systemName: "backward.fill",withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30)))
+        let image = C.Images.backword
         button.setImage(image, for: .normal)
         return button
     } ()
@@ -53,7 +53,7 @@ final class PlayerDetailViewController: UIViewController {
     private let forwardButton: UIButton = {
         let button = UIButton()
         button.tintColor = .blue
-        let image = UIImage(systemName: "forward.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30)))
+        let image = C.Images.forward
         button.setImage(image, for: .normal)
         return button
     } ()
@@ -61,7 +61,7 @@ final class PlayerDetailViewController: UIViewController {
     private let playPauseButton: UIButton = {
         let button = UIButton()
         button.tintColor = .blue
-        let image = UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40)))
+        let image = C.Images.pause
         button.setImage(image, for: .normal)
         return button
     } ()
