@@ -48,7 +48,7 @@ final class PlayerDetailViewController: UIViewController {
         let image = UIImage(systemName: "backward.fill",withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30)))
         button.setImage(image, for: .normal)
         return button
-    }()
+    } ()
     
     private let forwardButton: UIButton = {
         let button = UIButton()
@@ -56,7 +56,7 @@ final class PlayerDetailViewController: UIViewController {
         let image = UIImage(systemName: "forward.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 30)))
         button.setImage(image, for: .normal)
         return button
-    }()
+    } ()
     
     private let playPauseButton: UIButton = {
         let button = UIButton()
@@ -64,7 +64,15 @@ final class PlayerDetailViewController: UIViewController {
         let image = UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40)))
         button.setImage(image, for: .normal)
         return button
-    }()
+    } ()
+    
+    private let backButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Close", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 17.0)
+        return button
+    } ()
     
     let detailViewModel = PlayerDetailViewModel()
     
@@ -85,6 +93,7 @@ final class PlayerDetailViewController: UIViewController {
         view.addSubview(backwardButton)
         view.addSubview(forwardButton)
         view.addSubview(playPauseButton)
+        view.addSubview(backButton)
         addTargets()
         makeConstraints()
         bindToViewModel()
@@ -93,13 +102,10 @@ final class PlayerDetailViewController: UIViewController {
     private func bindToViewModel() {
         detailViewModel.$isPlaying
             .sink { [weak self] state in
-                if state == true {
-                    let image = UIImage(systemName: "pause.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40)))
-                    self?.playPauseButton.setImage(image, for: .normal)
-                } else {
-                    let image = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40)))
-                    self?.playPauseButton.setImage(image, for: .normal)
-                }
+                guard let self = self else { return }
+                let imageName = state ? "pause.fill" : "play.fill"
+                let image = UIImage(systemName: imageName, withConfiguration: UIImage.SymbolConfiguration(font: .systemFont(ofSize: 40)))
+                self.playPauseButton.setImage(image, for: .normal)
             }
             .store(in: &subscriptions)
         
@@ -131,6 +137,7 @@ final class PlayerDetailViewController: UIViewController {
         playPauseButton.addTarget(self, action: #selector(playPauseButtonTapped), for: .touchUpInside)
         backwardButton.addTarget(self, action: #selector(backTrackButtonTapped), for: .touchUpInside)
         forwardButton.addTarget(self, action: #selector(nextTrackButtonTapped), for: .touchUpInside)
+        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
     
     @objc private func playPauseButtonTapped() {
@@ -143,6 +150,10 @@ final class PlayerDetailViewController: UIViewController {
     
     @objc private func backTrackButtonTapped() {
         detailViewModel.onBackwordButtonTapped()
+    }
+    
+    @objc private func backButtonTapped() {
+        self.dismiss(animated: true)
     }
     
     private func makeConstraints() {
@@ -196,6 +207,13 @@ final class PlayerDetailViewController: UIViewController {
             make.leading.equalTo(playPauseButton.snp.trailing).offset(C.Constraints.forwardButtonLeading)
             make.height.equalTo(C.Constraints.forwardButtonHeight)
             make.width.equalTo(C.Constraints.forwardButtonWidth)
+        }
+        
+        backButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(16)
+            make.height.equalTo(32)
+            make.width.equalTo(60)
         }
     }
 }

@@ -15,11 +15,11 @@ final class MusicService: MusicServiceProtocol {
     //MARK: Properties
     static let shared = MusicService()
     
-    @Published var player = AVPlayer()
     @Published var currentTrackIndex = 0
     @Published var isPlaying = false
     
     var newTracks: [Track] = []
+    var player = AVPlayer()
     
     //MARK: Functions
     func play(trackIndex: Int) {
