@@ -31,7 +31,5 @@ final class MusicViewCell: UITableViewCell {
         if let duration = player.currentItem?.asset.duration.seconds {
             trackDurationLabel.text = dateFormatter.string(from: duration)
         }
-        
     }
-    
 }

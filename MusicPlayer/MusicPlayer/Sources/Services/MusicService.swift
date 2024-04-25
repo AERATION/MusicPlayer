@@ -19,7 +19,7 @@ final class MusicService: MusicServiceProtocol {
     @Published var isPlaying = false
     
     var newTracks: [Track] = []
-    var player = AVPlayer()
+    let player = AVPlayer()
     
     //MARK: Functions
     func play(trackIndex: Int) {
@@ -42,10 +42,10 @@ final class MusicService: MusicServiceProtocol {
     
     func nextTrack() {
         var newTrackIndex = currentTrackIndex
-        if newTrackIndex == newTracks.count-1 {
+        if newTrackIndex == newTracks.count - 1 {
             newTrackIndex = 0
         } else {
-            newTrackIndex+=1
+            newTrackIndex += 1
         }
         play(trackIndex: newTrackIndex)
     }
@@ -53,16 +53,15 @@ final class MusicService: MusicServiceProtocol {
     func previousTrack() {
         var newTrackIndex = currentTrackIndex
         if newTrackIndex == 0 {
-            newTrackIndex = newTracks.count-1
+            newTrackIndex = newTracks.count - 1
         } else {
-            newTrackIndex-=1
+            newTrackIndex -= 1
         }
         play(trackIndex: newTrackIndex)
     }
     
     func loadMusic() {
         let audioFileNames = Bundle.main.paths(forResourcesOfType: "mp3", inDirectory: nil)
-        
         if !audioFileNames.isEmpty {
             for audioUrl in audioFileNames {
                 let avp = AVPlayerItem(url: URL(fileURLWithPath: audioUrl))
