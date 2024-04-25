@@ -154,11 +154,11 @@
 		0E51F6552BD799E0002889A7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0E51F6562BD79A11002889A7 /* App */,
+				0E51F6572BD79A1F002889A7 /* Constants */,
 				0E780DD72BD970C900B1D9C7 /* Extensions */,
 				0EDE6C322BD7EFA5008FB57F /* Services */,
 				0E51F6582BD79A28002889A7 /* Model */,
-				0E51F6572BD79A1F002889A7 /* Constants */,
-				0E51F6562BD79A11002889A7 /* App */,
 				0E51F6592BD79A2F002889A7 /* Modules */,
 			);
 			path = Sources;
