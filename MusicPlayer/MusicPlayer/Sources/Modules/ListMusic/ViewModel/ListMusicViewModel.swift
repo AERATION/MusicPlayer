@@ -9,6 +9,7 @@ protocol ListMusicVMProtocol {
 
 final class ListMusicViewModel: ListMusicVMProtocol {
     
+    //MARK: Functions
     func loadListMusics() {
         MusicService.shared.loadMusic()
     }
