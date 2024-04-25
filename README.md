@@ -2,7 +2,7 @@
 ## Technologies Used
 
 - SWIFT
-- UIKit
+- UIKit/XIB
 - MVVM + Combine
 - SnapKit
 - AVFoundation
