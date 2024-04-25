@@ -43,5 +43,10 @@ enum C {
         static let forwardButtonLeading = 32
         static let forwardButtonHeight = 48
         static let forwardButtonWidth = 48
+        
+        static let backButtonLeading = 16
+        static let backButtonTop = 16
+        static let backButtonHeight = 32
+        static let backButtonWidth = 60
     }
 }

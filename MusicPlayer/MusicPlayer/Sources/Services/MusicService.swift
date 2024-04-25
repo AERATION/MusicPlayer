@@ -16,6 +16,8 @@ final class MusicService: MusicServiceProtocol {
     static let shared = MusicService()
     
     @Published var currentTrackIndex = 0
+    @Published var maxCurrentDuration: Double = 0
+    @Published var currentDuration: Double = 0
     @Published var isPlaying = false
     
     var newTracks: [Track] = []
@@ -28,16 +30,21 @@ final class MusicService: MusicServiceProtocol {
         } else {
             currentTrackIndex = trackIndex
             let playerItem = AVPlayerItem(url: URL(fileURLWithPath: newTracks[trackIndex].trackURL))
-            NotificationCenter.default.addObserver(self, selector: #selector(trackDidEnded), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
             player.replaceCurrentItem(with: playerItem)
             player.play()
             isPlaying = true
+            addObservers()
         }
     }
     
     func pause() {
-        player.pause()
-        isPlaying = false
+        if player.timeControlStatus == .playing {
+            player.pause()
+            isPlaying = false
+        } else if player.timeControlStatus == .paused {
+            player.play()
+            isPlaying = true
+        }
     }
     
     func nextTrack() {
@@ -58,6 +65,16 @@ final class MusicService: MusicServiceProtocol {
             newTrackIndex -= 1
         }
         play(trackIndex: newTrackIndex)
+    }
+    
+    func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(trackDidEnded), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: player.currentItem)
+        if let duration = MusicService.shared.player.currentItem?.asset.duration.seconds {
+            self.maxCurrentDuration = duration
+        }
+        player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 1000), queue: DispatchQueue.main) { (time) in
+            self.currentDuration = time.seconds
+        }
     }
     
     func loadMusic() {

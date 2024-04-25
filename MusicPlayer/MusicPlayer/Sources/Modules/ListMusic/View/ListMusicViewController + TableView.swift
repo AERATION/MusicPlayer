@@ -12,7 +12,7 @@ extension ListMusicViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func registerCell() {
-        listMusicTableView.register(UINib(nibName: String(describing: MusicViewCell.self), bundle: nil), forCellReuseIdentifier: MusicViewCell.identifier)
+        listMusicTableView.register(UINib(nibName: MusicViewCell.identifier, bundle: nil), forCellReuseIdentifier: MusicViewCell.identifier)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

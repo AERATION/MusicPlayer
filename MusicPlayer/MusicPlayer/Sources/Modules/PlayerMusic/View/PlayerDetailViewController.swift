@@ -125,10 +125,15 @@ final class PlayerDetailViewController: UIViewController {
             }
             .store(in: &subscriptions)
         
-        detailViewModel.$currentTrackIndex
-            .sink { [weak self] currentIndex in
-                self?.trackNameLabel.text = MusicService.shared.newTracks[currentIndex].trackName
-                self?.trackArtistLabel.text = MusicService.shared.newTracks[currentIndex].artistName
+        detailViewModel.$currentTrackName
+            .sink { [weak self] trackName in
+                self?.trackNameLabel.text = trackName
+            }
+            .store(in: &subscriptions)
+        
+        detailViewModel.$currentTrackArtist
+            .sink { [weak self] trackArtist in
+                self?.trackArtistLabel.text = trackArtist
             }
             .store(in: &subscriptions)
     }
@@ -210,10 +215,10 @@ final class PlayerDetailViewController: UIViewController {
         }
         
         backButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(16)
-            make.height.equalTo(32)
-            make.width.equalTo(60)
+            make.leading.equalToSuperview().offset(C.Constraints.backButtonLeading)
+            make.top.equalToSuperview().offset(C.Constraints.backButtonTop)
+            make.height.equalTo(C.Constraints.backButtonHeight)
+            make.width.equalTo(C.Constraints.backButtonWidth)
         }
     }
 }
